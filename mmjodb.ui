@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MMJODBClass</class>
+ <widget class="QMainWindow" name="MMJODBClass">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>947</width>
+    <height>701</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MMJODB</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_klassen">
+       <attribute name="title">
+        <string>Klassen</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QTabWidget" name="tabWidget_2">
+          <property name="currentIndex">
+           <number>0</number>
+          </property>
+          <widget class="QWidget" name="tab_grosskreuz_gross">
+           <attribute name="title">
+            <string>Großkreuz, groß</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_grosskreuz_klein">
+           <attribute name="title">
+            <string>Großkreuz, klein</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_grosskreuz_stern">
+           <attribute name="title">
+            <string>Großkreuz, Stern</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_kommandeurkreuz">
+           <attribute name="title">
+            <string>Kommandeurkreuz</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_ritterkreuz">
+           <attribute name="title">
+            <string>Ritterkreuz</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tab_militaer_ehrenzeichen">
+           <attribute name="title">
+            <string>Militär-Ehrenzeichen </string>
+           </attribute>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_traeger">
+       <attribute name="title">
+        <string>Träger</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_nationen">
+       <attribute name="title">
+        <string>Nationen</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tab_suche">
+       <attribute name="title">
+        <string>Suche</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>947</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuDatei">
+    <property name="title">
+     <string>Datenbank</string>
+    </property>
+    <addaction name="actionDatenbank_oeffnen"/>
+    <addaction name="actionSpeichern"/>
+   </widget>
+   <widget class="QMenu" name="menuHilfe">
+    <property name="title">
+     <string>Hilfe</string>
+    </property>
+    <addaction name="actionLizenzen"/>
+   </widget>
+   <addaction name="menuDatei"/>
+   <addaction name="menuHilfe"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="sizeGripEnabled">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <action name="actionDatenbank_oeffnen">
+   <property name="text">
+    <string>Öffnen...</string>
+   </property>
+  </action>
+  <action name="actionSpeichern">
+   <property name="text">
+    <string>Speichern als...</string>
+   </property>
+  </action>
+  <action name="actionLizenzen">
+   <property name="text">
+    <string>Lizenzen</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="mmjodb.qrc"/>
+ </resources>
+ <connections/>
+</ui>
