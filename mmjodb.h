@@ -18,6 +18,7 @@ private slots:
     void on_actionDatenbankOeffnen_triggered();
     void on_actionDatenbankNeu_triggered();
     void on_buttonRunSQLQuery_clicked();
+    void on_actionLizenzen_triggered();
 private:
     Ui::MMJODBClass ui;
     QErrorMessage m_emsg;

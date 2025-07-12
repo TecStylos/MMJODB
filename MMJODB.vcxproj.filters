@@ -67,12 +67,18 @@
     <ClCompile Include="DBRow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="licensesdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="insigniedialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="traegerdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="licensesdialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -83,6 +89,9 @@
     <QtUic Include="insigniedialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
+    <QtUic Include="licensesdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vendor\sqlite\binaries\sqlite3.dll">
@@ -91,13 +100,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Database.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DBQuery.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DBRow.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

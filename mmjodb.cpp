@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "mmjodb.h"
 
+#include "licensesdialog.h"
+
 #include "Database.h"
 
 MMJODB::MMJODB(QWidget *parent)
@@ -106,17 +108,12 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
                 col_names_qstr.append(QString::fromStdString(col_name));
             
             curr_table->setHorizontalHeaderLabels(col_names_qstr);
-
-			// Put table in scroll area
-			auto scroll_area = new QScrollArea();
-			scroll_area->setWidget(curr_table);
-			scroll_area->setWidgetResizable(true);
-			scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-			scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+			curr_table->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
+			curr_table->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
 
             // Create new tab for SQL output table
 			std::string tab_name = "Ausgabe " + std::to_string(++num_tabs);
-			ui.tabSQLOutput->addTab(scroll_area, QString::fromStdString(tab_name));
+            ui.tabSQLOutput->addTab(curr_table, QString::fromStdString(tab_name));
 
             return true;
         };
@@ -143,4 +140,10 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
                 "Fehler: " + query.get_err_msg()
             )
         );
+}
+
+void MMJODB::on_actionLizenzen_triggered()
+{
+    auto dialog = new LicensesDialog(this);
+    dialog->show();
 }
