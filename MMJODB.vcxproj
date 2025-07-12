@@ -63,6 +63,16 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Link>
+      <AdditionalDependencies>vendor/sqlite/binaries/sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Link>
+      <AdditionalDependencies>vendor/sqlite/binaries/sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
@@ -102,7 +112,13 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Database.cpp" />
+    <ClCompile Include="DBQuery.cpp" />
+    <ClCompile Include="DBRow.cpp" />
     <ClCompile Include="traegerdialog.cpp" />
+    <CopyFileToFolders Include="vendor\sqlite\binaries\sqlite3.dll">
+      <FileType>Document</FileType>
+    </CopyFileToFolders>
     <QtMoc Include="traegerdialog.h" />
     <QtRcc Include="mmjodb.qrc" />
     <QtUic Include="traegerdialog.ui" />
@@ -115,6 +131,9 @@
     <QtUic Include="insigniedialog.ui" />
     <ResourceCompile Include="MMJODB.rc" />
     <QtMoc Include="insigniedialog.h" />
+    <ClInclude Include="Database.h" />
+    <ClInclude Include="DBQuery.h" />
+    <ClInclude Include="DBRow.h" />
     <ClInclude Include="stdafx.h" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">Create</PrecompiledHeader>
