@@ -88,39 +88,54 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
     auto query = db->make_query(sql_stmt_str);
 
     ui.labelSQLError->clear();
-    ui.tableSQLOutput->clear();
-	ui.tableSQLOutput->setRowCount(0);
-	ui.tableSQLOutput->setColumnCount(0);
+    ui.tabSQLOutput->clear();
+
+    int num_tabs = 0;
+
+    QTableWidget* curr_table = nullptr;
+
+    auto table_callback = [&](const std::vector<std::string>& col_names)
+        {
+			curr_table = new QTableWidget();
+            curr_table->setColumnCount(col_names.size());
+
+            // Set table header labels
+            QStringList col_names_qstr;
+            col_names_qstr.reserve(col_names.size());
+            for (const auto& col_name : col_names)
+                col_names_qstr.append(QString::fromStdString(col_name));
+            
+            curr_table->setHorizontalHeaderLabels(col_names_qstr);
+
+			// Put table in scroll area
+			auto scroll_area = new QScrollArea();
+			scroll_area->setWidget(curr_table);
+			scroll_area->setWidgetResizable(true);
+			scroll_area->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+			scroll_area->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+
+            // Create new tab for SQL output table
+			std::string tab_name = "Ausgabe " + std::to_string(++num_tabs);
+			ui.tabSQLOutput->addTab(scroll_area, QString::fromStdString(tab_name));
+
+            return true;
+        };
 
     auto row_callback = [&](const DBRow& row)
         {
 			// Add row to table
-			int row_index = ui.tableSQLOutput->rowCount();
-			ui.tableSQLOutput->insertRow(row_index);
+			int row_index = curr_table->rowCount();
+            curr_table->insertRow(row_index);
 
             for (int i = 0; i < row.get_col_cnt(); ++i)
             {
                 auto col = row.get_col(i, DBRow::Column::Type::Text);
                 auto item = new QTableWidgetItem(QString::fromStdString(col.value().get_text()));
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
-				ui.tableSQLOutput->setItem(row_index, i, item);
+                curr_table->setItem(row_index, i, item);
             }
             return true;
         };
-
-    auto table_callback = [&](const std::vector<std::string>& col_names)
-        {
-			ui.tableSQLOutput->setColumnCount(col_names.size());
-
-			QStringList col_names_qstr;
-			col_names_qstr.reserve(col_names.size());
-            for (const auto& col_name : col_names)
-				col_names_qstr.append(QString::fromStdString(col_name));
-
-            ui.tableSQLOutput->setHorizontalHeaderLabels(col_names_qstr);
-
-            return true;
-		};
 
     if (query.execute(row_callback, table_callback))
         ui.labelSQLError->setText(
