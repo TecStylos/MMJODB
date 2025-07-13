@@ -16,7 +16,7 @@ Cell(hidden):
 	""
 
 QuotedString(hidden fuse):
-    [ "\"\"" "\""! ]*
+    [ "\"\""->"\"" "\""! ]*
 
 UnquotedString(hidden fuse):
     [ "," Newline ]!+

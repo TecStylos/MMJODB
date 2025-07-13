@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "FileDialog.h"
+#include "FileDialogs.h"
 
 #include "QFileDialog"
 

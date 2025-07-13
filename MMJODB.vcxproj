@@ -128,13 +128,15 @@ cmake -S . -B build -G "Visual Studio 17 2022"</Command>
   <ItemGroup>
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Database.cpp" />
+    <ClCompile Include="dataimportdialog.cpp" />
     <ClCompile Include="DBQuery.cpp" />
     <ClCompile Include="DBRow.cpp" />
-    <ClCompile Include="FileDialog.cpp" />
+    <ClCompile Include="FileDialogs.cpp" />
     <ClCompile Include="licensesdialog.cpp" />
     <ClCompile Include="traegerdialog.cpp" />
     <ClInclude Include="CSVReader.h" />
-    <ClInclude Include="FileDialog.h" />
+    <QtMoc Include="dataimportdialog.h" />
+    <ClInclude Include="FileDialogs.h" />
     <ClInclude Include="Strings.h" />
     <CopyFileToFolders Include="vendor\sqlite\binaries\sqlite3.dll">
       <FileType>Document</FileType>
@@ -142,6 +144,7 @@ cmake -S . -B build -G "Visual Studio 17 2022"</Command>
     <None Include="_config.yml" />
     <QtMoc Include="traegerdialog.h" />
     <QtRcc Include="mmjodb.qrc" />
+    <QtUic Include="dataimportdialog.ui" />
     <QtUic Include="licensesdialog.ui" />
     <QtUic Include="traegerdialog.ui" />
     <QtUic Include="mmjodb.ui" />

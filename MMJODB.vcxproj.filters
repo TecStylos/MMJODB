@@ -73,10 +73,13 @@
     <ClCompile Include="licensesdialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileDialog.cpp">
+    <ClCompile Include="FileDialogs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CSVReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dataimportdialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -90,6 +93,9 @@
     <QtMoc Include="licensesdialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="dataimportdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="traegerdialog.ui">
@@ -99,6 +105,9 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="licensesdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="dataimportdialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -120,7 +129,7 @@
     <ClInclude Include="Strings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FileDialog.h">
+    <ClInclude Include="FileDialogs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CSVReader.h">

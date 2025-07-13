@@ -2,11 +2,12 @@
 #include "mmjodb.h"
 
 #include "licensesdialog.h"
+#include "dataimportdialog.h"
 
 #include "Database.h"
 #include "Strings.h"
 
-#include "FileDialog.h"
+#include "FileDialogs.h"
 #include "CSVReader.h"
 
 MMJODB::MMJODB(QWidget *parent)
@@ -83,38 +84,8 @@ void MMJODB::on_actionImportData_triggered()
     if (warn_if_no_db_open(db))
         return;
 
-	// TODO: Implement data import functionality
-
-    // File selection (*.csv)
-    auto filepath = single_file_dialog(this, STR_DIALOG_IMPORT_DATA_TITLE, STR_DIALOG_IMPORT_DATA_FILTER, true);
-    if (filepath.empty())
-        return;
-
-    // Read CSV file
-    CSVReader csv;
-    try
-    {
-        csv = CSVReader(filepath);
-    }
-    catch (const std::runtime_error& e)
-    {
-        m_emsg.showMessage(
-            tr(e.what()),
-            tr(STR_INT_ERR_TYPE_CSV_READER)
-        );
-        return;
-	}
-
-    // Data selection (data preview, column selection, header row)
-
-
-    // Constraint selection (valid value ranges)
-
-	// Data mapping (data columns to database columns)
-
-	// Automatic data import (insert into database)
-
-	// Manual verification (show imported data, allow manual corrections, duplicate handling)
+    DataImportDialog import_dialog(this);
+    import_dialog.exec();
 }
 
 void MMJODB::on_actionImportImages_triggered()
