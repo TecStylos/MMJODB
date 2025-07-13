@@ -82,7 +82,7 @@
       </widget>
       <widget class="QWidget" name="tabSQLQuery">
        <attribute name="title">
-        <string>SQL-Anfrage</string>
+        <string>SQL-Abfrage</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_10">
         <item row="0" column="1">
@@ -165,12 +165,14 @@
     <addaction name="actionDatenbankOeffnen"/>
     <addaction name="actionDatenbankNeu"/>
     <addaction name="actionDatenImportieren"/>
+    <addaction name="actionDetails"/>
    </widget>
    <widget class="QMenu" name="menuHilfe">
     <property name="title">
      <string>Hilfe</string>
     </property>
     <addaction name="actionLizenzen"/>
+    <addaction name="actionWebsite"/>
    </widget>
    <addaction name="menuDatei"/>
    <addaction name="menuHilfe"/>
@@ -201,6 +203,16 @@
   <action name="actionDatenImportieren">
    <property name="text">
     <string>Daten importieren</string>
+   </property>
+  </action>
+  <action name="actionDetails">
+   <property name="text">
+    <string>Details</string>
+   </property>
+  </action>
+  <action name="actionWebsite">
+   <property name="text">
+    <string>Website</string>
    </property>
   </action>
  </widget>

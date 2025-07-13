@@ -98,22 +98,38 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
 
     auto table_callback = [&](const std::vector<std::string>& col_names)
         {
-			curr_table = new QTableWidget();
-            curr_table->setColumnCount(col_names.size());
+            QWidget* new_tab = nullptr;
 
-            // Set table header labels
-            QStringList col_names_qstr;
-            col_names_qstr.reserve(col_names.size());
-            for (const auto& col_name : col_names)
-                col_names_qstr.append(QString::fromStdString(col_name));
-            
-            curr_table->setHorizontalHeaderLabels(col_names_qstr);
-			curr_table->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
-			curr_table->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
+            if (col_names.empty())
+            {
+                QLabel* label = new QLabel(
+                    tr("Keine Spalten in der Abfrage gefunden.")
+				);
 
+				label->setAlignment(Qt::AlignCenter);
+
+                new_tab = label;
+            }
+            else
+            {
+                curr_table = new QTableWidget();
+                curr_table->setColumnCount(col_names.size());
+
+                // Set table header labels
+                QStringList col_names_qstr;
+                col_names_qstr.reserve(col_names.size());
+                for (const auto& col_name : col_names)
+                    col_names_qstr.append(QString::fromStdString(col_name));
+
+                curr_table->setHorizontalHeaderLabels(col_names_qstr);
+                curr_table->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
+                curr_table->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
+
+                new_tab = curr_table;
+            }
             // Create new tab for SQL output table
 			std::string tab_name = "Ausgabe " + std::to_string(++num_tabs);
-            ui.tabSQLOutput->addTab(curr_table, QString::fromStdString(tab_name));
+            ui.tabSQLOutput->addTab(new_tab, QString::fromStdString(tab_name));
 
             return true;
         };
@@ -146,4 +162,9 @@ void MMJODB::on_actionLizenzen_triggered()
 {
     auto dialog = new LicensesDialog(this);
     dialog->show();
+}
+
+void MMJODB::on_actionWebseite_triggered()
+{
+    QDesktopServices::openUrl(QUrl("https://mmjodb.github.io/"));
 }
