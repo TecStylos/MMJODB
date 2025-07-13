@@ -120,6 +120,7 @@
     <CopyFileToFolders Include="vendor\sqlite\binaries\sqlite3.dll">
       <FileType>Document</FileType>
     </CopyFileToFolders>
+    <None Include="_config.yml" />
     <QtMoc Include="traegerdialog.h" />
     <QtRcc Include="mmjodb.qrc" />
     <QtUic Include="licensesdialog.ui" />
@@ -129,6 +130,7 @@
     <ClCompile Include="insigniedialog.cpp" />
     <ClCompile Include="mmjodb.cpp" />
     <ClCompile Include="main.cpp" />
+    <None Include="docs\index.md" />
     <None Include="MMJODB.ico" />
     <QtUic Include="insigniedialog.ui" />
     <ResourceCompile Include="MMJODB.rc" />

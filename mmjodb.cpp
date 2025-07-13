@@ -164,7 +164,7 @@ void MMJODB::on_actionLizenzen_triggered()
     dialog->show();
 }
 
-void MMJODB::on_actionWebseite_triggered()
+void MMJODB::on_actionWebsite_triggered()
 {
     QDesktopServices::openUrl(QUrl("https://mmjodb.github.io/"));
 }
