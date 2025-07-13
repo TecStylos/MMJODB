@@ -166,5 +166,5 @@ void MMJODB::on_actionLizenzen_triggered()
 
 void MMJODB::on_actionWebsite_triggered()
 {
-    QDesktopServices::openUrl(QUrl("https://mmjodb.github.io/"));
+    QDesktopServices::openUrl(QUrl("https://tecstylos.github.io/MMJODB/"));
 }
