@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DataImportDialog</string>
+   <string>Daten importieren</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="1">
@@ -70,7 +70,7 @@
             <item>
              <widget class="QPushButton" name="buttonOpenFile">
               <property name="text">
-               <string>Datei oeffnen</string>
+               <string>Datei öffnen</string>
               </property>
              </widget>
             </item>
@@ -188,7 +188,7 @@
      <item>
       <widget class="QPushButton" name="buttonPreviousStep">
        <property name="text">
-        <string>&lt; Zurueck</string>
+        <string>&lt; Zurück</string>
        </property>
       </widget>
      </item>

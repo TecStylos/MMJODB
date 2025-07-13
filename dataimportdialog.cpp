@@ -143,7 +143,6 @@ DataImportDialog::DataImportDialog(QWidget *parent)
 	ui.setupUi(this);
 
 	ui.tableViewReadData->setModel(&m_csv_model);
-	ui.tableViewReadData->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
 	ui.tableViewReadData->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
 
 	m_constraints_model.set_constraints(&m_constraints);

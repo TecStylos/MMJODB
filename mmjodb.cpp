@@ -105,7 +105,7 @@ void MMJODB::on_actionImportImages_triggered()
 void MMJODB::on_actionShowLicenses_triggered()
 {
     auto dialog = new LicensesDialog(this);
-    dialog->show();
+    dialog->exec();
 }
 
 void MMJODB::on_actionOpenWebsite_triggered()
@@ -156,7 +156,6 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
                     col_names_qstr.append(QString::fromStdString(col_name));
 
                 curr_table->setHorizontalHeaderLabels(col_names_qstr);
-                curr_table->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
                 curr_table->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
 
                 new_tab = curr_table;
