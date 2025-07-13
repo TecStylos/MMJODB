@@ -6,6 +6,9 @@
 #define STR_ERR_MSG_NO_DB_OPEN "Es ist keine Datenbank geöffnet."
 #define STR_INT_ERR_MSG_TYPE_NO_DB_OPEN "NoDBOpen"
 
+#define STR_DIALOG_IMPORT_DATA_TITLE "Daten importieren"
+#define STR_DIALOG_IMPORT_DATA_FILTER "CSV-Dateien (*.csv)"
+
 #define STR_DIALOG_NEW_DB_TITLE "Neue Datenbank anlegen"
 #define STR_DIALOG_OPEN_DB_TITLE "Datenbank öffnen"
 #define STR_DIALOG_OPEN_DB_FILTER "Datenbanken (*.mmjodb)"

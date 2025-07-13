@@ -115,8 +115,10 @@
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DBQuery.cpp" />
     <ClCompile Include="DBRow.cpp" />
+    <ClCompile Include="FileDialog.cpp" />
     <ClCompile Include="licensesdialog.cpp" />
     <ClCompile Include="traegerdialog.cpp" />
+    <ClInclude Include="FileDialog.h" />
     <ClInclude Include="Strings.h" />
     <CopyFileToFolders Include="vendor\sqlite\binaries\sqlite3.dll">
       <FileType>Document</FileType>
