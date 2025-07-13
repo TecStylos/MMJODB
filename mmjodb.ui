@@ -75,7 +75,7 @@
         <string>Nationen</string>
        </attribute>
       </widget>
-      <widget class="QWidget" name="tabSuche">
+      <widget class="QWidget" name="tabSearch">
        <attribute name="title">
         <string>Suche</string>
        </attribute>
@@ -162,17 +162,25 @@
     <property name="title">
      <string>Datenbank</string>
     </property>
-    <addaction name="actionDatenbankOeffnen"/>
-    <addaction name="actionDatenbankNeu"/>
-    <addaction name="actionDatenImportieren"/>
-    <addaction name="actionDetails"/>
+    <widget class="QMenu" name="menuImportieren">
+     <property name="title">
+      <string>Importieren...</string>
+     </property>
+     <addaction name="actionImportData"/>
+     <addaction name="actionImportImages"/>
+    </widget>
+    <addaction name="actionOpenDatabase"/>
+    <addaction name="actionNewDatabase"/>
+    <addaction name="separator"/>
+    <addaction name="actionShowDetails"/>
+    <addaction name="menuImportieren"/>
    </widget>
    <widget class="QMenu" name="menuHilfe">
     <property name="title">
      <string>Hilfe</string>
     </property>
-    <addaction name="actionLizenzen"/>
-    <addaction name="actionWebsite"/>
+    <addaction name="actionShowLicenses"/>
+    <addaction name="actionOpenWebsite"/>
    </widget>
    <addaction name="menuDatei"/>
    <addaction name="menuHilfe"/>
@@ -185,34 +193,45 @@
     <bool>true</bool>
    </property>
   </widget>
-  <action name="actionDatenbankOeffnen">
+  <action name="actionOpenDatabase">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Öffnen</string>
    </property>
   </action>
-  <action name="actionLizenzen">
+  <action name="actionShowLicenses">
    <property name="text">
     <string>Lizenzen</string>
    </property>
   </action>
-  <action name="actionDatenbankNeu">
+  <action name="actionNewDatabase">
    <property name="text">
     <string>Neu</string>
    </property>
   </action>
-  <action name="actionDatenImportieren">
-   <property name="text">
-    <string>Daten importieren</string>
+  <action name="actionShowDetails">
+   <property name="checkable">
+    <bool>false</bool>
    </property>
-  </action>
-  <action name="actionDetails">
    <property name="text">
     <string>Details</string>
    </property>
   </action>
-  <action name="actionWebsite">
+  <action name="actionOpenWebsite">
    <property name="text">
     <string>Webseite</string>
+   </property>
+  </action>
+  <action name="actionImportData">
+   <property name="text">
+    <string>Daten</string>
+   </property>
+  </action>
+  <action name="actionImportImages">
+   <property name="text">
+    <string>Bilder</string>
    </property>
   </action>
  </widget>

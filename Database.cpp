@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Database.h"
 
+#include "Strings.h"
+
 std::shared_ptr<Database> Database::s_singleton = nullptr;
 
 Database::Database(const std::string& filepath, bool allow_create)
@@ -11,7 +13,7 @@ Database::Database(const std::string& filepath, bool allow_create)
 
 	int rc = sqlite3_open_v2(filepath.c_str(), &m_db, open_flags, NULL);
 	if (rc != SQLITE_OK)
-		throw std::runtime_error("Datenbank konnte nicht geoeffnet werden.");
+		throw std::runtime_error(STR_ERR_MSG_CANNOT_OPEN_DB);
 }
 
 Database::~Database()

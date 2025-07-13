@@ -14,8 +14,6 @@ bool DBQuery::execute(Callback_Row cb_row, Callback_Table cb_table)
 	int rc;
 	const char* stmt_str = m_sql_stmt_str.c_str();
 
-	printf("Executing statement...\n");
-
 	while (stmt_str)
 	{
 		// Prepare statement

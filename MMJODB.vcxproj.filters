@@ -111,6 +111,9 @@
     <ClInclude Include="DBRow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Strings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="docs\index.md">

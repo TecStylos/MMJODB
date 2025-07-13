@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "DBRow.h"
 
+#include "Strings.h"
+
 DBRow::Column::Column()
 	: m_type(Type::Null)
 {
@@ -30,7 +32,7 @@ DBRow::Column::Column(Type type)
 	case Type::None:
 		break;
 	default:
-		throw std::runtime_error("Unknown column type!");
+		throw std::runtime_error(STR_INT_ERR_UNKNOWN_COLUMN_TYPE);
 	}
 }
 
@@ -72,28 +74,28 @@ DBRow::Column::Type DBRow::Column::get_type() const
 int64_t DBRow::Column::get_int64() const
 {
 	if (m_type != Type::Int64)
-		throw std::runtime_error("Column type mismatch: expected Int64");
+		throw std::runtime_error(STR_INT_ERR_COL_TYPE_MISMATCH_EXP_INT64);
 	return std::get<int64_t>(m_data);
 }
 
 double DBRow::Column::get_float64() const
 {
 	if (m_type != Type::Float64)
-		throw std::runtime_error("Column type mismatch: expected Float64");
+		throw std::runtime_error(STR_INT_ERR_COL_TYPE_MISMATCH_EXP_FLOAT64);
 	return std::get<double>(m_data);
 }
 
 const std::string& DBRow::Column::get_text() const
 {
 	if (m_type != Type::Text)
-		throw std::runtime_error("Column type mismatch: expected Text");
+		throw std::runtime_error(STR_INT_ERR_COL_TYPE_MISMATCH_EXP_TEXT);
 	return std::get<std::string>(m_data);
 }
 
 const std::vector<char>& DBRow::Column::get_blob() const
 {
 	if (m_type != Type::Blob)
-		throw std::runtime_error("Column type mismatch: expected Blob");
+		throw std::runtime_error(STR_INT_ERR_COL_TYPE_MISMATCH_EXP_BLOB);
 	return std::get<std::vector<char>>(m_data);
 }
 
@@ -179,7 +181,7 @@ std::optional<DBRow::Column> DBRow::get_col(int index, Column::Type type) const
 	case Column::Type::None:
 		throw std::runtime_error("This should never occur!");
 	default:
-		throw std::runtime_error("Unknown column type!");
+		throw std::runtime_error(STR_INT_ERR_UNKNOWN_COLUMN_TYPE);
 	}
 
 	return col;
