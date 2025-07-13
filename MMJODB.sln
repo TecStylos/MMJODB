@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MMJODB", "MMJODB.vcxproj", "{763689F0-1FF2-443F-8498-A6EED72D40A9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{38AA58FB-9E62-34DA-9019-FE4A7F9A57A9} = {38AA58FB-9E62-34DA-9019-FE4A7F9A57A9}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libqrawlr", "vendor\Qrawlr\build\libQrawlr\libqrawlr.vcxproj", "{38AA58FB-9E62-34DA-9019-FE4A7F9A57A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +20,10 @@ Global
 		{763689F0-1FF2-443F-8498-A6EED72D40A9}.Debug|x64.Build.0 = Debug|x64
 		{763689F0-1FF2-443F-8498-A6EED72D40A9}.Release|x64.ActiveCfg = Release|x64
 		{763689F0-1FF2-443F-8498-A6EED72D40A9}.Release|x64.Build.0 = Release|x64
+		{38AA58FB-9E62-34DA-9019-FE4A7F9A57A9}.Debug|x64.ActiveCfg = Debug|x64
+		{38AA58FB-9E62-34DA-9019-FE4A7F9A57A9}.Debug|x64.Build.0 = Debug|x64
+		{38AA58FB-9E62-34DA-9019-FE4A7F9A57A9}.Release|x64.ActiveCfg = Release|x64
+		{38AA58FB-9E62-34DA-9019-FE4A7F9A57A9}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

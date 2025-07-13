@@ -7,6 +7,7 @@
 #include "Strings.h"
 
 #include "FileDialog.h"
+#include "CSVReader.h"
 
 MMJODB::MMJODB(QWidget *parent)
     : QMainWindow(parent)
@@ -89,7 +90,23 @@ void MMJODB::on_actionImportData_triggered()
     if (filepath.empty())
         return;
 
+    // Read CSV file
+    CSVReader csv;
+    try
+    {
+        csv = CSVReader(filepath);
+    }
+    catch (const std::runtime_error& e)
+    {
+        m_emsg.showMessage(
+            tr(e.what()),
+            tr(STR_INT_ERR_TYPE_CSV_READER)
+        );
+        return;
+	}
+
     // Data selection (data preview, column selection, header row)
+
 
     // Constraint selection (valid value ranges)
 

@@ -30,3 +30,5 @@
 #define STR_SQL_ERROR_PREFIX "SQL Fehler: "
 
 #define STR_URL_GITHUB_PAGES_MMJODB "https://tecstylos.github.io/MMJODB/"
+
+#define STR_INT_ERR_TYPE_CSV_READER "CSVReaderError"
