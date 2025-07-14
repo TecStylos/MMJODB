@@ -5,8 +5,6 @@
 #include "FileDialogs.h"
 
 // TODO: Implement data import steps:
-// Data selection (data preview, column selection, header row)
-// Constraint selection (valid value ranges)
 // Data mapping (data columns to database columns)
 // Automatic data import (insert into database)
 // Manual verification (show imported data, allow manual corrections, duplicate handling)
@@ -157,12 +155,27 @@ DataImportDialog::DataImportDialog(QWidget *parent)
 	m_constraints_model.set_constraints(&m_constraints);
 	ui.listConstraints->setModel(&m_constraints_model);
 
+	setup_tab_mappings();
+
 	hide_all_tabs_except_current();
-	update_prev_next_visibility();
+	update_prev_next_done_visibility();
 }
 
 DataImportDialog::~DataImportDialog()
 {}
+
+void DataImportDialog::setup_tab_mappings()
+{
+	m_column_mapping_widgets.clear();
+	const char* names[] = { "Dienstgrad/Titel", "Name", "Vorname/Titel", "Nation", "Geburtstag", "Todestag", "Geburtsort", "Sterbeort", "Lebensalter" };
+
+	for (int i = 0; i < sizeof(names) / sizeof(names[0]); ++i)
+	{
+		auto widget = new DataImportColumnMappingWidget(ui.tabMapping);
+		ui.layoutColumnMappings->addWidget(widget);
+		m_column_mapping_widgets.push_back(widget);
+	}
+}
 
 void DataImportDialog::hide_all_tabs_except_current()
 {
@@ -171,11 +184,12 @@ void DataImportDialog::hide_all_tabs_except_current()
 		ui.tabsImportSteps->setTabVisible(i, i == curr_index);
 }
 
-void DataImportDialog::update_prev_next_visibility()
+void DataImportDialog::update_prev_next_done_visibility()
 {
 	int curr_index = ui.tabsImportSteps->currentIndex();
 	ui.buttonPreviousStep->setVisible(curr_index > 0);
 	ui.buttonNextStep->setVisible(curr_index < ui.tabsImportSteps->count() - 1);
+	ui.buttonDone->setVisible(curr_index == ui.tabsImportSteps->count() - 1);
 }
 
 void DataImportDialog::load_constraints_from_imported_csv()
@@ -265,7 +279,7 @@ void DataImportDialog::on_buttonPreviousStep_clicked()
 	{
 		ui.tabsImportSteps->setCurrentIndex(curr_index - 1);
 		hide_all_tabs_except_current();
-		update_prev_next_visibility();
+		update_prev_next_done_visibility();
 	}
 }
 
@@ -276,7 +290,7 @@ void DataImportDialog::on_buttonNextStep_clicked()
 	{
 		ui.tabsImportSteps->setCurrentIndex(curr_index + 1);
 		hide_all_tabs_except_current();
-		update_prev_next_visibility();
+		update_prev_next_done_visibility();
 	}
 }
 

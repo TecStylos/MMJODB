@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Added by TecStylos
-*.mmjodb
+test_data/
 
 # User-specific files
 *.rsuser

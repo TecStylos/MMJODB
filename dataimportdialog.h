@@ -5,6 +5,8 @@
 
 #include "CSVReader.h"
 
+#include "dataimportcolumnmappingwidget.h"
+
 class CSVTableModel : public QAbstractTableModel
 {
 	Q_OBJECT
@@ -51,8 +53,9 @@ public:
 	DataImportDialog(QWidget *parent = nullptr);
 	~DataImportDialog();
 private:
+	void setup_tab_mappings();
 	void hide_all_tabs_except_current();
-	void update_prev_next_visibility();
+	void update_prev_next_done_visibility();
 	void load_constraints_from_imported_csv();
 	void update_constraint_list();
 private slots:
@@ -67,5 +70,6 @@ private:
 	CSVTableModel m_csv_model;
 	std::vector<std::map<std::string, bool>> m_constraints;
 	ConstraintListModel m_constraints_model;
+	std::vector<DataImportColumnMappingWidget*> m_column_mapping_widgets;
 };
 

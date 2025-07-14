@@ -82,6 +82,12 @@
     <ClCompile Include="dataimportdialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="dataimportfilterwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dataimportcolumnmappingwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="insigniedialog.h">
@@ -96,6 +102,12 @@
     <QtMoc Include="dataimportdialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="dataimportfilterwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="dataimportcolumnmappingwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="traegerdialog.ui">
@@ -108,6 +120,12 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="dataimportdialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="dataimportfilterwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="dataimportcolumnmappingwidget.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

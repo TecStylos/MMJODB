@@ -116,7 +116,7 @@
           <item row="2" column="0">
            <widget class="QPushButton" name="buttonRunSQLQuery">
             <property name="text">
-             <string>Ausfuehren</string>
+             <string>Ausführen</string>
             </property>
            </widget>
           </item>
