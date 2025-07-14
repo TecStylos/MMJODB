@@ -45,7 +45,16 @@ QVariant CSVTableModel::data(const QModelIndex& index, int role) const
 		auto cell = m_p_csv->get_cell(index.row(), index.column());
 		return QString::fromStdString(cell);
 	}
+
 	return QVariant();
+}
+
+Qt::ItemFlags CSVTableModel::flags(const QModelIndex& index) const
+{
+	if (!index.isValid() || m_p_csv == nullptr)
+		return Qt::NoItemFlags;
+
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 void CSVTableModel::set_csv(CSVReader* p_csv)
@@ -229,7 +238,6 @@ void DataImportDialog::on_buttonOpenFile_clicked()
 		for (size_t i = 0; i < m_csv.get_col_count(); ++i)
 		{
 			auto item = new QListWidgetItem(QString::fromStdString(m_csv.get_cell(0, i)));
-			item->setCheckState(Qt::Checked);
 			ui.listColumnsToImport->addItem(item);
 		}
 		ui.listColumnsToImport->setCurrentRow(0);
