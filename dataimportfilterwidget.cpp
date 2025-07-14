@@ -10,3 +10,7 @@ DataImportFilterWidget::DataImportFilterWidget(QWidget *parent)
 DataImportFilterWidget::~DataImportFilterWidget()
 {}
 
+void DataImportFilterWidget::on_buttonDelete_clicked()
+{
+	deleteLater();
+}

@@ -70,6 +70,6 @@ private:
 	CSVTableModel m_csv_model;
 	std::vector<std::map<std::string, bool>> m_constraints;
 	ConstraintListModel m_constraints_model;
-	std::vector<DataImportColumnMappingWidget*> m_column_mapping_widgets;
+	std::map<std::string, DataImportColumnMappingWidget*> m_column_mapping_widgets;
 };
 

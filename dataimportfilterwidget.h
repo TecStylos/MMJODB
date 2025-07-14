@@ -10,7 +10,8 @@ class DataImportFilterWidget : public QWidget
 public:
 	DataImportFilterWidget(QWidget *parent = nullptr);
 	~DataImportFilterWidget();
-
+private slots:
+	void on_buttonDelete_clicked();
 private:
 	Ui::DataImportFilterWidgetClass ui;
 };

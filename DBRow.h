@@ -4,6 +4,7 @@
 #include <vector>
 #include <optional>
 #include <variant>
+#include <string>
 
 #include "vendor/sqlite/sqlite3.h"
 
@@ -54,10 +55,12 @@ public:
 private:
 	bool index_out_of_bounds(int index) const;
 private:
-	static Column::Type conv_col_type(int type);
-	static int conv_col_type(Column::Type type);
 private:
 	sqlite3_stmt* m_stmt;
 	int m_col_cnt;
 	mutable std::map<std::string, int> m_name_mapping;
 };
+
+DBRow::Column::Type conv_col_type(int type);
+int conv_col_type(DBRow::Column::Type type);
+std::string column_type_to_string(DBRow::Column::Type type);

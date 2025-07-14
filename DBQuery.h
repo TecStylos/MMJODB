@@ -9,7 +9,7 @@ class DBQuery
 {
 public:
 	typedef std::function<bool (const DBRow&)> Callback_Row;
-	typedef std::function<bool (const std::vector<std::string>&)> Callback_Table;
+	typedef std::function<bool (const std::vector<std::pair<std::string, DBRow::Column::Type>>&)> Callback_Table;
 public:
 	DBQuery(sqlite3* db, const std::string& sql_stmt_str);
 public:

@@ -11,12 +11,11 @@ class DataImportColumnMappingWidget : public QWidget
 	Q_OBJECT
 
 public:
-	DataImportColumnMappingWidget(QWidget *parent = nullptr);
+	DataImportColumnMappingWidget(QWidget *parent, const std::vector<std::string>& data_column_names, const std::string& db_column_visible_name, const std::string& db_column_type);
 	~DataImportColumnMappingWidget();
 private slots:
 	void on_buttonAddFilter_clicked();
 private:
 	Ui::DataImportColumnMappingWidgetClass ui;
-	std::vector<DataImportFilterWidget*> m_filters;
 };
 

@@ -216,42 +216,61 @@ bool DBRow::index_out_of_bounds(int index) const
 	return index < 0 || index >= get_col_cnt();
 }
 
-DBRow::Column::Type DBRow::conv_col_type(int type)
+DBRow::Column::Type conv_col_type(int type)
 {
 	switch (type)
 	{
 	case SQLITE_INTEGER:
-		return Column::Type::Int64;
+		return DBRow::Column::Type::Int64;
 	case SQLITE_FLOAT:
-		return Column::Type::Float64;
+		return DBRow::Column::Type::Float64;
 	case SQLITE_BLOB:
-		return Column::Type::Blob;
+		return DBRow::Column::Type::Blob;
 	case SQLITE_NULL:
-		return Column::Type::Null;
+		return DBRow::Column::Type::Null;
 	case SQLITE_TEXT:
-		return Column::Type::Text;
+		return DBRow::Column::Type::Text;
 	default:
-		return Column::Type::None;
+		return DBRow::Column::Type::None;
 	}
 }
 
-int DBRow::conv_col_type(Column::Type type)
+int conv_col_type(DBRow::Column::Type type)
 {
 	switch (type)
 	{
-	case Column::Type::Null:
+	case DBRow::Column::Type::Null:
 		return SQLITE_NULL;
-	case Column::Type::Int64:
+	case DBRow::Column::Type::Int64:
 		return SQLITE_INTEGER;
-	case Column::Type::Float64:
+	case DBRow::Column::Type::Float64:
 		return SQLITE_FLOAT;
-	case Column::Type::Text:
+	case DBRow::Column::Type::Text:
 		return SQLITE_TEXT;
-	case Column::Type::Blob:
+	case DBRow::Column::Type::Blob:
 		return SQLITE_BLOB;
-	case Column::Type::None:
+	case DBRow::Column::Type::None:
 		return -1;
 	default:
 		return -1;
+	}
+}
+
+std::string column_type_to_string(DBRow::Column::Type type)
+{
+	switch (type)
+	{
+	case DBRow::Column::Type::Null:
+		return "NULL";
+	case DBRow::Column::Type::Int64:
+		return "INTEGER";
+	case DBRow::Column::Type::Float64:
+		return "REAL";
+	case DBRow::Column::Type::Text:
+		return "TEXT";
+	case DBRow::Column::Type::Blob:
+		return "BLOB";
+	default:
+		return "UNKNOWN";
 	}
 }

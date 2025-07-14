@@ -25,6 +25,7 @@ void MMJODB::open_database(const std::string& filepath, bool allow_create)
     {
         auto db = std::make_shared<Database>(filepath, allow_create);
         Database::set_instance(db);
+		setWindowTitle(QString::fromStdString(STR_TITLE_MAIN_WINDOW + (" - " + filepath)));
     }
     catch (std::runtime_error& e)
     {
@@ -130,11 +131,11 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
 
     QTableWidget* curr_table = nullptr;
 
-    auto table_callback = [&](const std::vector<std::string>& col_names)
+    auto table_callback = [&](const std::vector<std::pair<std::string, DBRow::Column::Type>>& columns)
         {
             QWidget* new_tab = nullptr;
 
-            if (col_names.empty())
+            if (columns.empty())
             {
                 QLabel* label = new QLabel(
                     tr(STR_INFO_NO_DATA_RETRIEVED)
@@ -147,13 +148,16 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
             else
             {
                 curr_table = new QTableWidget();
-                curr_table->setColumnCount((int)col_names.size());
+                curr_table->setColumnCount((int)columns.size());
 
                 // Set table header labels
                 QStringList col_names_qstr;
-                col_names_qstr.reserve(col_names.size());
-                for (const auto& col_name : col_names)
-                    col_names_qstr.append(QString::fromStdString(col_name));
+                col_names_qstr.reserve(columns.size());
+                for (const auto& column : columns)
+                {
+					std::string name = column.first + " (" + column_type_to_string(column.second) + ")";
+                    col_names_qstr.append(QString::fromStdString(name));
+                }
 
                 curr_table->setHorizontalHeaderLabels(col_names_qstr);
                 curr_table->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
@@ -176,7 +180,14 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
             for (int i = 0; i < row.get_col_cnt(); ++i)
             {
                 auto col = row.get_col(i, DBRow::Column::Type::Text);
-                auto item = new QTableWidgetItem(QString::fromStdString(col.value().get_text()));
+
+                std::string value;
+                if (col.value().get_type() == DBRow::Column::Type::Null)
+                    value = "<NULL>";
+                else
+					value = col.value().get_text();
+
+                auto item = new QTableWidgetItem(QString::fromStdString(value));
                 item->setFlags(item->flags() & ~Qt::ItemIsEditable);
                 curr_table->setItem(row_index, i, item);
             }

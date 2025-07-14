@@ -3,6 +3,7 @@
 
 #include "Strings.h"
 #include "FileDialogs.h"
+#include "Database.h"
 
 // TODO: Implement data import steps:
 // Data mapping (data columns to database columns)
@@ -149,6 +150,8 @@ DataImportDialog::DataImportDialog(QWidget *parent)
 {
 	ui.setupUi(this);
 
+	setWindowTitle(QString::fromStdString(STR_TITLE_DATA_IMPORT_DIALOG));
+
 	ui.tableViewReadData->setModel(&m_csv_model);
 	ui.tableViewReadData->setHorizontalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
 
@@ -166,14 +169,36 @@ DataImportDialog::~DataImportDialog()
 
 void DataImportDialog::setup_tab_mappings()
 {
-	m_column_mapping_widgets.clear();
-	const char* names[] = { "Dienstgrad/Titel", "Name", "Vorname/Titel", "Nation", "Geburtstag", "Todestag", "Geburtsort", "Sterbeort", "Lebensalter" };
-
-	for (int i = 0; i < sizeof(names) / sizeof(names[0]); ++i)
+	for (auto& widget : m_column_mapping_widgets)
 	{
-		auto widget = new DataImportColumnMappingWidget(ui.tabMapping);
-		ui.layoutColumnMappings->addWidget(widget);
-		m_column_mapping_widgets.push_back(widget);
+		ui.layoutColumnMappings->removeWidget(widget.second);
+		delete widget.second;
+	}
+	m_column_mapping_widgets.clear();
+
+	std::vector<std::string> data_column_names;
+	data_column_names.push_back("<NULL>");
+	for (size_t i = 0; i < m_csv.get_col_count(); ++i)
+		data_column_names.push_back(m_csv.get_cell(0, i));
+
+	auto db = Database::get_instance();
+	for (auto& table_name : db->get_table_names())
+	{
+		auto table_info = db->get_table_info(table_name);
+		for (auto& column : table_info.columns)
+		{
+			auto entry_name = table_name + "." + column.first;
+
+			auto widget = new DataImportColumnMappingWidget(
+				ui.tabMapping,
+				data_column_names,
+				entry_name,
+				column_type_to_string(column.second)
+			);
+
+			ui.layoutColumnMappings->addWidget(widget);
+			m_column_mapping_widgets[entry_name] = widget;
+		}
 	}
 }
 
@@ -246,21 +271,6 @@ void DataImportDialog::on_buttonOpenFile_clicked()
 		m_csv_model.set_csv(nullptr);
 		m_csv = CSVReader(filepath);
 		m_csv_model.set_csv(&m_csv);
-
-		// Update list containing columns to import
-		ui.listColumnsToImport->clear();
-		for (size_t i = 0; i < m_csv.get_col_count(); ++i)
-		{
-			auto item = new QListWidgetItem(QString::fromStdString(m_csv.get_cell(0, i)));
-			ui.listColumnsToImport->addItem(item);
-		}
-		ui.listColumnsToImport->setCurrentRow(0);
-
-		// Update constraints
-		load_constraints_from_imported_csv();
-
-		// Update constraints list for selected column
-		update_constraint_list();
 	}
 	catch (const std::runtime_error& e)
 	{
@@ -270,6 +280,26 @@ void DataImportDialog::on_buttonOpenFile_clicked()
 		);
 		return;
 	}
+
+	setWindowTitle(QString::fromStdString(STR_TITLE_DATA_IMPORT_DIALOG + (" - " + filepath)));
+
+	// Update list containing columns to import
+	ui.listColumnsToImport->clear();
+	for (size_t i = 0; i < m_csv.get_col_count(); ++i)
+	{
+		auto item = new QListWidgetItem(QString::fromStdString(m_csv.get_cell(0, i)));
+		ui.listColumnsToImport->addItem(item);
+	}
+	ui.listColumnsToImport->setCurrentRow(0);
+
+	// Update constraints
+	load_constraints_from_imported_csv();
+
+	// Update constraints list for selected column
+	update_constraint_list();
+
+	// Setup tab mappings
+	setup_tab_mappings();
 }
 
 void DataImportDialog::on_buttonPreviousStep_clicked()

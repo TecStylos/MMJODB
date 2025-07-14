@@ -42,17 +42,17 @@ bool DBQuery::execute(Callback_Row cb_row, Callback_Table cb_table)
 		// If callback for table is set, call it with column names
 		if (cb_table)
 		{
-			std::vector<std::string> col_names;
-			col_names.reserve(col_cnt);
+			std::vector<std::pair<std::string, DBRow::Column::Type>> columns;
+			columns.reserve(col_cnt);
 
 			for (int i = 0; i < col_cnt; ++i)
 			{
 				const char* col_name = sqlite3_column_name(stmt, i);
-				if (col_name)
-					col_names.emplace_back(col_name);
+				auto col_type = conv_col_type(sqlite3_column_type(stmt, i));
+				columns.push_back({ col_name ? col_name : "", col_type });
 			}
 
-			if (!cb_table(col_names))
+			if (!cb_table(columns))
 			{
 				sqlite3_finalize(stmt);
 				return false;

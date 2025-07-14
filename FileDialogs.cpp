@@ -19,7 +19,7 @@ std::string single_file_dialog(QWidget* parent, const std::string& title, const 
 
 	QFileDialog::AcceptMode accept_mode = for_read_else_write ? QFileDialog::AcceptOpen : QFileDialog::AcceptSave;
 	dialog.setAcceptMode(accept_mode);
-	dialog.setWindowTitle(QString::fromStdString(title));
+	dialog.setWindowTitle(QString::fromStdString("MMJODB: " + title));
 
 	if (dialog.exec())
 	{
