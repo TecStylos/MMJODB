@@ -43,11 +43,13 @@ Database::TableInfo Database::get_table_info(const std::string& table_name)
 	TableInfo table_info;
 	table_info.name = table_name;
 
-	auto query = make_query("SELECT * FROM " + table_name + " WHERE False");
-	query.execute(nullptr, [&](const std::vector<std::pair<std::string, DBRow::Column::Type>>& columns)
+	auto query = make_query("PRAGMA table_info(" + table_name + ")");
+	query.execute([&](const DBRow& row)
 		{
-			for (const auto& column : columns)
-				table_info.columns[column.first] = column.second;
+			auto col_name = row.get_col("name", DBRow::Column::Type::Text).value().get_text();
+			auto col_type = row.get_col("type", DBRow::Column::Type::Text).value().get_text();
+
+			table_info.columns[col_name] = string_to_column_type(col_type);
 
 			return true;
 		}

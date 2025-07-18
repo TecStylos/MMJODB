@@ -162,11 +162,11 @@ std::optional<DBRow::Column> DBRow::get_col(int index, Column::Type type) const
 	}
 	case Column::Type::Text:
 	{
-		const unsigned char* data = sqlite3_column_text(m_stmt, index);
+		const char* data = (const char*)sqlite3_column_text(m_stmt, index);
 		if (!data)
 			col = Column(Column::Type::Null);
 		else
-			col = Column(std::string((const char*)data));
+			col = Column(std::string(data, data + strlen(data)));
 		break;
 	}
 	case Column::Type::Blob:
@@ -263,7 +263,7 @@ std::string column_type_to_string(DBRow::Column::Type type)
 	case DBRow::Column::Type::Null:
 		return "NULL";
 	case DBRow::Column::Type::Int64:
-		return "INTEGER";
+		return "INT";
 	case DBRow::Column::Type::Float64:
 		return "REAL";
 	case DBRow::Column::Type::Text:
@@ -273,4 +273,20 @@ std::string column_type_to_string(DBRow::Column::Type type)
 	default:
 		return "UNKNOWN";
 	}
+}
+
+DBRow::Column::Type string_to_column_type(const std::string& type_str)
+{
+	if (type_str == "INT" || type_str == "INTEGER")
+		return DBRow::Column::Type::Int64;
+	else if (type_str == "REAL")
+		return DBRow::Column::Type::Float64;
+	else if (type_str == "TEXT")
+		return DBRow::Column::Type::Text;
+	else if (type_str == "BLOB")
+		return DBRow::Column::Type::Blob;
+	else if (type_str == "NULL")
+		return DBRow::Column::Type::Null;
+	else
+		return DBRow::Column::Type::None; // Unknown type
 }

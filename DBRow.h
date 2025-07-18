@@ -28,12 +28,17 @@ public:
 		std::variant<int64_t, double, std::string, std::vector<char>> m_data;
 	public:
 		Column();
+		Column(Column&&) = default;
+		Column(const Column&) = default;
 		Column(Type type);
 		Column(int64_t data);
 		Column(double data);
 		Column(const std::string& data);
 		Column(const std::vector<char>& data);
 		Column(const char* data, int size);
+	public:
+		Column& operator=(Column&&) = default;
+		Column& operator=(const Column&) = default;
 	public:
 		Type get_type() const;
 		int64_t get_int64() const;
@@ -64,3 +69,4 @@ private:
 DBRow::Column::Type conv_col_type(int type);
 int conv_col_type(DBRow::Column::Type type);
 std::string column_type_to_string(DBRow::Column::Type type);
+DBRow::Column::Type string_to_column_type(const std::string& type_str);

@@ -155,7 +155,7 @@ void MMJODB::on_buttonRunSQLQuery_clicked()
                 col_names_qstr.reserve(columns.size());
                 for (const auto& column : columns)
                 {
-					std::string name = column.first + " (" + column_type_to_string(column.second) + ")";
+                    std::string name = column.first; // +" (" + column_type_to_string(column.second) + ")";
                     col_names_qstr.append(QString::fromStdString(name));
                 }
 

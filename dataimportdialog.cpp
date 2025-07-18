@@ -332,3 +332,15 @@ void DataImportDialog::on_listColumnsToImport_currentRowChanged(int currentRow)
 	m_constraints_model.set_current_column(currentRow);
 	update_constraint_list();
 }
+
+void DataImportDialog::on_buttonTestFilters_clicked()
+{
+	for (int i = 0; i < ui.layoutColumnMappings->count(); ++i)
+	{
+		auto widget = qobject_cast<DataImportColumnMappingWidget*>(ui.layoutColumnMappings->itemAt(i)->widget());
+		if (!widget)
+			continue;
+
+		widget->test_filters(m_csv);
+	}
+}

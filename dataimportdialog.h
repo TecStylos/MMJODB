@@ -63,6 +63,7 @@ private slots:
 	void on_buttonPreviousStep_clicked();
 	void on_buttonNextStep_clicked();
 	void on_listColumnsToImport_currentRowChanged(int currentRow);
+	void on_buttonTestFilters_clicked();
 private:
 	Ui::DataImportDialogClass ui;
 	QErrorMessage m_emsg;

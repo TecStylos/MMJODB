@@ -16,6 +16,26 @@ DataImportColumnMappingWidget::DataImportColumnMappingWidget(QWidget *parent, co
 DataImportColumnMappingWidget::~DataImportColumnMappingWidget()
 {}
 
+void DataImportColumnMappingWidget::test_filters(const CSVReader& csv)
+{
+	int matches = 0;
+
+	for (int i = 0; i < ui.layoutFilters->count(); ++i)
+	{
+		auto widget = qobject_cast<DataImportFilterWidget*>(ui.layoutFilters->itemAt(i)->widget());
+		if (!widget)
+			continue;
+
+		int col_id = ui.comboDataColumnName->currentIndex() - 1; // -1 to account for "<NULL>" option
+
+		matches += widget->test_filter(csv, col_id);
+	}
+
+	int row_count = (int)csv.get_row_count() - 1; // Exclude header row
+
+	ui.labelFilterResults->setText("Treffer gesamt: " + QString::number(matches) + "/" + QString::number(row_count));
+}
+
 void DataImportColumnMappingWidget::on_buttonAddFilter_clicked()
 {
 	auto filter_widget = new DataImportFilterWidget(this);

@@ -6,6 +6,8 @@
 #define STR_TITLE_LICENSES_DIALOG "MMJODB: Lizenzen"
 #define STR_TITLE_TRAEGER_DIALOG "MMJODB: Träger"
 
+#define STR_ERR_LBL_INVALID_FILTER "Ungültiger Filter"
+
 #define STR_ERR_MSG_CANNOT_OPEN_DB "Die Datenbank konnte nicht geöffnet werden."
 #define STR_INT_ERR_MSG_TYPE_OPEN_DB "CannotOpenDB"
 
