@@ -3,6 +3,7 @@
 #include <QWidget>
 #include "ui_dataimportfilterwidget.h"
 
+#include <map>
 #include <string>
 #include <vector>
 #include <libQrawlr.h>
@@ -22,6 +23,12 @@ private:
 		std::string name;
 		std::vector<std::pair<bool, std::string>> values; // bool -> is_string, string -> value/type
 	};
+	struct Match
+	{
+		std::map<std::string, std::string> named_matches;
+		int beg = -1;
+		int end = -1;
+	};
 public:
 	Filter(const std::string& filter_in_text, const std::string& filter_out_text);
 public:
@@ -33,6 +40,7 @@ private:
 	void create_output_filter(const std::string& filter_out_text);
 	std::vector<SubFilter> parse_matcher(qrawlr::ParseTreeNodeRef node);
 	bool check_filter_compatibility() const;
+	Match find_match(const std::string& value, const std::vector<SubFilter>& filter, bool reverse) const;
 private:
 	bool m_is_valid;
 	FilterType m_type;

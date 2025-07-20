@@ -20,13 +20,18 @@ void DataImportColumnMappingWidget::test_filters(const CSVReader& csv)
 {
 	int matches = 0;
 
+	int col_id = ui.comboDataColumnName->currentIndex() - 1; // -1 to account for "<NULL>" option
+	if (col_id < 0)
+	{
+		ui.labelFilterResults->setText("Keine Datensplate ausgewaehlt");
+		return;
+	}
+
 	for (int i = 0; i < ui.layoutFilters->count(); ++i)
 	{
 		auto widget = qobject_cast<DataImportFilterWidget*>(ui.layoutFilters->itemAt(i)->widget());
 		if (!widget)
 			continue;
-
-		int col_id = ui.comboDataColumnName->currentIndex() - 1; // -1 to account for "<NULL>" option
 
 		matches += widget->test_filter(csv, col_id);
 	}

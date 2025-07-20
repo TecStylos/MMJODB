@@ -152,8 +152,80 @@ std::optional<std::string> Filter::apply(const std::string& value) const
 	if (!is_valid())
 		return {};
 
-	// Implement logic to apply the filter to the value
-	return value; // Placeholder
+	std::map<std::string, std::string> named_matches;
+
+	auto match_a = find_match(value, m_filter_in_a, false);
+	auto match_b = find_match(value, m_filter_in_b, true);
+
+	named_matches.merge(match_a.named_matches);
+	named_matches.merge(match_b.named_matches);
+
+	// Check if match_a is correctly detected
+	if (!m_filter_in_a.empty())
+	{
+		if (
+			(match_a.beg < 0) ||
+			(match_a.beg != 0 && m_type != FilterType::Contains) ||
+			(match_a.end != value.size() && m_type == FilterType::Exact)
+			)
+			return {};
+	}
+
+	// Check if match_b is correctly detected
+	if (!m_filter_in_b.empty())
+		if (match_b.end != value.size())
+			return {};
+
+	// Check if match_a and match_b collide
+	if (!m_filter_in_a.empty() && !m_filter_in_b.empty())
+	{
+		if (match_a.end > match_b.beg)
+			return {};
+	}
+
+	auto handle_any_name = [&](int begin, int end, const std::string& name)
+		{
+			if (name.empty())
+				return;
+
+			named_matches[name] = value.substr(begin, end - begin);
+		};
+
+	// get values for MatchAny sub filters
+	switch (m_type)
+	{
+	case FilterType::Exact:
+		break;
+	case FilterType::Contains:
+		handle_any_name(0, match_a.beg, m_filter_in_match_any_name_1);
+		handle_any_name(match_a.end, value.size(), m_filter_in_match_any_name_2);
+		break;
+	case FilterType::BeginsWith:
+		handle_any_name(match_a.end, value.size(), m_filter_in_match_any_name_1);
+		break;
+	case FilterType::EndsWith:
+		handle_any_name(0, match_b.beg, m_filter_in_match_any_name_1);
+		break;
+	case FilterType::BeginsAndEndsWith:
+		handle_any_name(match_a.end, match_b.beg, m_filter_in_match_any_name_1);
+		break;
+	}
+
+
+	// Generate output
+	std::string out;
+	for (auto& [f_is_str, f_val] : m_filter_out)
+	{
+		if (f_is_str)
+		{
+			out.append(f_val);
+			continue;
+		}
+
+		out.append(named_matches[f_val]);
+	}
+
+	return out;
 }
 
 void Filter::create_input_filter(const std::string& filter_in_text)
@@ -211,7 +283,7 @@ void Filter::create_input_filter(const std::string& filter_in_text)
 		break;
 	case FilterType::EndsWith:
 		m_filter_in_match_any_name_1 = qrawlr::expect_child_leaf(root_node, "0.0.0", nullptr)->get_value();
-		m_filter_in_a = parse_matcher(qrawlr::expect_child_node(root_node, "1", nullptr));
+		m_filter_in_b = parse_matcher(qrawlr::expect_child_node(root_node, "1", nullptr));
 		break;
 	case FilterType::BeginsAndEndsWith:
 		m_filter_in_a = parse_matcher(qrawlr::expect_child_node(root_node, "0", nullptr));
@@ -297,6 +369,87 @@ bool Filter::check_filter_compatibility() const
 	}
 
 	return true;
+}
+
+Filter::Match Filter::find_match(const std::string& value, const std::vector<SubFilter>& filter, bool reverse) const
+{
+	int beg, end, chg;
+	if (!reverse)
+	{
+		beg = 0;
+		end = value.size();
+		chg = 1;
+	}
+	else
+	{
+		beg = value.size() - 1;
+		end = -1;
+		chg = -1;
+	}
+
+	auto get_match_at = [&](int pos)
+		{
+			Match m;
+			m.beg = pos;
+
+			for (auto& sf : filter)
+			{
+				int sf_beg = pos;
+
+				for (auto& [v_is_str, v_value] : sf.values)
+				{
+					if (pos >= value.size())
+						return Match();
+
+					if (v_is_str)
+					{
+						if (value.find(v_value, pos) == pos)
+							pos += v_value.size();
+						else
+							return Match();
+					}
+					else
+					{
+						if (v_value == "d")
+						{
+							if (!std::isdigit(value[pos]))
+								return Match();
+						}
+						else if (v_value == "a")
+						{
+							if (!std::isalpha(value[pos]))
+								return Match();
+						}
+						else if (v_value == ".")
+						{
+							; // pass, match every character
+						}
+						else
+						{
+							throw std::runtime_error("This should never occur!");
+						}
+
+						++pos;
+					}
+				}
+
+				if (!sf.name.empty())
+					m.named_matches.emplace(sf.name, value.substr(sf_beg, pos - sf_beg));
+			}
+
+			m.end = pos;
+
+			return m;
+		};
+
+	for (int cur = beg; cur != end; cur += chg)
+	{
+		Match m = get_match_at(cur);
+		if (m.beg >= 0)
+			return m;
+	}
+
+	return {};
 }
 
 void Filter::create_output_filter(const std::string& filter_out_text)
