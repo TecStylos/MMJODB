@@ -44,6 +44,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="buttonImportData">
+       <property name="text">
+        <string>Importieren</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QPushButton" name="buttonDone">
        <property name="text">
         <string>Fertig</string>
@@ -58,7 +65,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <property name="documentMode">
       <bool>false</bool>

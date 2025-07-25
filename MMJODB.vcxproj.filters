@@ -88,6 +88,12 @@
     <ClCompile Include="dataimportcolumnmappingwidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="acceptcanceldialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="progressdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="insigniedialog.h">
@@ -108,6 +114,12 @@
     <QtMoc Include="dataimportcolumnmappingwidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="acceptcanceldialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="progressdialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="traegerdialog.ui">
@@ -126,6 +138,12 @@
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="dataimportcolumnmappingwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="acceptcanceldialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="progressdialog.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>

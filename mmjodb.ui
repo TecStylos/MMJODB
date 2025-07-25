@@ -132,7 +132,9 @@
         <item row="0" column="0">
          <widget class="QPlainTextEdit" name="textEditSQLQuery">
           <property name="plainText">
-           <string>select * from database</string>
+           <string>select * from traeger;
+select * from insignie;
+select * from verleihung;</string>
           </property>
          </widget>
         </item>

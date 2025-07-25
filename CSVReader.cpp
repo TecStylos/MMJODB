@@ -85,6 +85,11 @@ CSVReader::CSVReader(const std::string& filepath)
 	}
 }
 
+CSVReader::CSVReader(const std::vector<std::vector<std::string>>& data)
+	: m_data(data)
+{
+}
+
 size_t CSVReader::get_row_count() const
 {
 	return m_data.size();
@@ -97,9 +102,48 @@ size_t CSVReader::get_col_count() const
 	return m_data[0].size();
 }
 
-const std::string& CSVReader::get_cell(size_t row, size_t col) const
+std::optional<std::string> CSVReader::get_cell(size_t row, size_t col) const
 {
 	if (row >= m_data.size() || col >= m_data[row].size())
-		throw std::out_of_range("CSVReader: Index out of range");
+		return {};
+
 	return m_data[row][col];
+}
+
+bool CSVReader::set_cell(size_t row, size_t col, const std::string& content)
+{
+	if (row >= m_data.size() || col >= m_data[row].size())
+		return false;
+
+	m_data[row][col] = content;
+
+	return true;
+}
+
+CSVReader CSVReader::make_sub_table(size_t row, size_t col, size_t row_count, size_t col_count, bool keep_header) const
+{
+	std::vector<std::vector<std::string>> sub_data;
+
+	row_count = std::min(row_count, get_row_count() - row);
+	col_count = std::min(col_count, get_col_count() - col);
+
+	if (row_count <= 0 || col_count <= 0)
+		return CSVReader();
+
+	auto add_row = [&](size_t row_id)
+		{
+			auto row_it = m_data[row_id].begin() + col;
+			sub_data.emplace_back(row_it, row_it + col_count);
+		};
+
+	if (keep_header && get_row_count() > 0)
+		add_row(0);
+
+	sub_data.resize(row_count, std::vector<std::string>(col_count, ""));
+	sub_data.reserve(row_count + (keep_header ? 1 : 0));
+
+	for (size_t row_id = row; row_id < row + row_count; ++row_id)
+		add_row(row_id);
+
+	return CSVReader(sub_data);
 }

@@ -126,6 +126,7 @@ cmake -S . -B build -G "Visual Studio 17 2022"</Command>
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="acceptcanceldialog.cpp" />
     <ClCompile Include="CSVReader.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="dataimportcolumnmappingwidget.cpp" />
@@ -135,12 +136,15 @@ cmake -S . -B build -G "Visual Studio 17 2022"</Command>
     <ClCompile Include="DBRow.cpp" />
     <ClCompile Include="FileDialogs.cpp" />
     <ClCompile Include="licensesdialog.cpp" />
+    <ClCompile Include="progressdialog.cpp" />
     <ClCompile Include="traegerdialog.cpp" />
+    <QtMoc Include="acceptcanceldialog.h" />
     <ClInclude Include="CSVReader.h" />
     <QtMoc Include="dataimportdialog.h" />
     <QtMoc Include="dataimportfilterwidget.h" />
     <QtMoc Include="dataimportcolumnmappingwidget.h" />
     <ClInclude Include="FileDialogs.h" />
+    <QtMoc Include="progressdialog.h" />
     <ClInclude Include="Strings.h" />
     <CopyFileToFolders Include="vendor\sqlite\binaries\sqlite3.dll">
       <FileType>Document</FileType>
@@ -148,10 +152,12 @@ cmake -S . -B build -G "Visual Studio 17 2022"</Command>
     <None Include="_config.yml" />
     <QtMoc Include="traegerdialog.h" />
     <QtRcc Include="mmjodb.qrc" />
+    <QtUic Include="acceptcanceldialog.ui" />
     <QtUic Include="dataimportcolumnmappingwidget.ui" />
     <QtUic Include="dataimportdialog.ui" />
     <QtUic Include="dataimportfilterwidget.ui" />
     <QtUic Include="licensesdialog.ui" />
+    <QtUic Include="progressdialog.ui" />
     <QtUic Include="traegerdialog.ui" />
     <QtUic Include="mmjodb.ui" />
     <QtMoc Include="mmjodb.h" />

@@ -130,7 +130,7 @@ Filter::Filter(const std::string& filter_in_text, const std::string& filter_out_
 		return;
 	}
 
-	if (m_is_valid && !check_filter_compatibility())
+	if (!check_filter_compatibility())
 		m_is_valid = false;
 }
 
@@ -337,6 +337,9 @@ std::vector<Filter::SubFilter> Filter::parse_matcher(qrawlr::ParseTreeNodeRef no
 
 bool Filter::check_filter_compatibility() const
 {
+	if (!is_valid())
+		return false;
+
 	std::set<std::string> names_in;
 	
 	if (!m_filter_in_match_any_name_1.empty()) names_in.insert(m_filter_in_match_any_name_1);
@@ -509,7 +512,7 @@ int DataImportFilterWidget::test_filter(const CSVReader& csv, int col_id)
 	}
 
 	for (int i = 1; i < row_count; ++i) // Start from 1 to skip header row
-		if (filter.matches(csv.get_cell(i, col_id)))
+		if (filter.matches(csv.get_cell(i, col_id).value()))
 			++matches;
 
 	ui.labelFilterResult->setText("Treffer: " + QString::number(matches) + "/" + QString::number(row_count - 1));

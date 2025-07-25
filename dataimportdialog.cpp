@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "dataimportdialog.h"
 
+#include "acceptcanceldialog.h"
+
 #include "Strings.h"
 #include "FileDialogs.h"
 #include "Database.h"
@@ -11,7 +13,7 @@
 // Manual verification (show imported data, allow manual corrections, duplicate handling)
 
 CSVTableModel::CSVTableModel(QObject* parent)
-	: QAbstractTableModel(parent), m_p_csv(nullptr)
+	: QAbstractTableModel(parent), m_p_csv(nullptr), m_is_editable(false)
 {
 }
 
@@ -42,18 +44,39 @@ QVariant CSVTableModel::data(const QModelIndex& index, int role) const
 	if (role == Qt::DisplayRole || role == Qt::EditRole)
 	{
 		auto cell = m_p_csv->get_cell(index.row(), index.column());
-		return QString::fromStdString(cell);
+		if (!cell.has_value())
+			return QVariant();
+
+		return QString::fromStdString(cell.value());
 	}
 
 	return QVariant();
 }
 
+bool CSVTableModel::setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole)
+{
+	bool success = m_p_csv->set_cell(index.row(), index.column(), value.toString().toStdString());
+
+	if (!success)
+		return false;
+
+	dataChanged(index, index);
+	return true;
+}
+
 Qt::ItemFlags CSVTableModel::flags(const QModelIndex& index) const
 {
-	if (!index.isValid() || m_p_csv == nullptr)
-		return Qt::NoItemFlags;
+	Qt::ItemFlags flags;
 
-	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+	if (!index.isValid() || m_p_csv == nullptr)
+		return flags;
+
+	flags |= Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+
+	if (m_is_editable)
+		flags |= Qt::ItemIsEditable;
+
+	return flags;
 }
 
 void CSVTableModel::set_csv(CSVReader* p_csv)
@@ -61,6 +84,11 @@ void CSVTableModel::set_csv(CSVReader* p_csv)
 	beginResetModel();
 	m_p_csv = p_csv;
 	endResetModel();
+}
+
+void CSVTableModel::set_editable(bool is_editable)
+{
+	m_is_editable = is_editable;
 }
 
 ConstraintListModel::ConstraintListModel(QObject* parent)
@@ -161,7 +189,7 @@ DataImportDialog::DataImportDialog(QWidget *parent)
 	setup_tab_mappings();
 
 	hide_all_tabs_except_current();
-	update_prev_next_done_visibility();
+	update_button_visibility();
 }
 
 DataImportDialog::~DataImportDialog()
@@ -179,7 +207,7 @@ void DataImportDialog::setup_tab_mappings()
 	std::vector<std::string> data_column_names;
 	data_column_names.push_back("<NULL>");
 	for (size_t i = 0; i < m_csv.get_col_count(); ++i)
-		data_column_names.push_back(m_csv.get_cell(0, i));
+		data_column_names.push_back(m_csv.get_cell(0, i).value());
 
 	auto db = Database::get_instance();
 	for (auto& table_name : db->get_table_names())
@@ -209,12 +237,14 @@ void DataImportDialog::hide_all_tabs_except_current()
 		ui.tabsImportSteps->setTabVisible(i, i == curr_index);
 }
 
-void DataImportDialog::update_prev_next_done_visibility()
+void DataImportDialog::update_button_visibility()
 {
 	int curr_index = ui.tabsImportSteps->currentIndex();
-	ui.buttonPreviousStep->setVisible(curr_index > 0);
-	ui.buttonNextStep->setVisible(curr_index < ui.tabsImportSteps->count() - 1);
-	ui.buttonDone->setVisible(curr_index == ui.tabsImportSteps->count() - 1);
+
+	ui.buttonPreviousStep->setVisible(curr_index == 1);
+	ui.buttonNextStep->setVisible(curr_index == 0);
+	ui.buttonImportData->setVisible(curr_index == 1);
+	ui.buttonDone->setVisible(curr_index == 2);
 }
 
 void DataImportDialog::load_constraints_from_imported_csv()
@@ -238,7 +268,7 @@ void DataImportDialog::load_constraints_from_imported_csv()
 		constraints.clear();
 		for (size_t row = 1; row < m_csv.get_row_count(); ++row)
 		{
-			auto& cell = m_csv.get_cell(row, col);
+			auto cell = m_csv.get_cell(row, col).value();
 			constraints[cell] = true; // Mark this value as valid
 		}
 	}
@@ -255,6 +285,38 @@ void DataImportDialog::update_constraint_list()
 	// Select the first item in the constraints list
 	if (m_constraints_model.rowCount() > 0)
 		ui.listConstraints->setCurrentIndex(m_constraints_model.index(0));
+}
+
+void DataImportDialog::auto_import_data()
+{
+	m_import_status_per_row.clear();
+	m_import_status_per_row.resize(m_csv.get_row_count(), ImportStatus::None);
+
+	// TODO: Implement working progress bar
+	//auto dialog = new ProgressDialog(this, "MMJODB - Daten Import", "Daten werden importiert...");
+	//dialog->setRange(0, m_csv.get_row_count() - 1);
+	//dialog->setValue(0);
+	//dialog->open();
+
+	auto db = Database::get_instance();
+
+	for (size_t row_id = 1; row_id < m_csv.get_row_count(); ++row_id)
+	{
+		auto import_status = ImportStatus::NeedsCorrection;
+		
+		auto query = db->make_query("INSERT INTO traeger; INSERT INTO insignie; INSERT INTO verleihung;");
+
+		// TODO: Bind values to import
+
+		if (!query.execute(nullptr))
+			import_status = ImportStatus::Imported;
+
+		m_import_status_per_row[row_id] = import_status;
+
+		//dialog->setValue(row_id);
+	}
+
+	//dialog->close();
 }
 
 void DataImportDialog::on_buttonOpenFile_clicked()
@@ -287,7 +349,7 @@ void DataImportDialog::on_buttonOpenFile_clicked()
 	ui.listColumnsToImport->clear();
 	for (size_t i = 0; i < m_csv.get_col_count(); ++i)
 	{
-		auto item = new QListWidgetItem(QString::fromStdString(m_csv.get_cell(0, i)));
+		auto item = new QListWidgetItem(QString::fromStdString(m_csv.get_cell(0, i).value()));
 		ui.listColumnsToImport->addItem(item);
 	}
 	ui.listColumnsToImport->setCurrentRow(0);
@@ -309,7 +371,7 @@ void DataImportDialog::on_buttonPreviousStep_clicked()
 	{
 		ui.tabsImportSteps->setCurrentIndex(curr_index - 1);
 		hide_all_tabs_except_current();
-		update_prev_next_done_visibility();
+		update_button_visibility();
 	}
 }
 
@@ -320,8 +382,30 @@ void DataImportDialog::on_buttonNextStep_clicked()
 	{
 		ui.tabsImportSteps->setCurrentIndex(curr_index + 1);
 		hide_all_tabs_except_current();
-		update_prev_next_done_visibility();
+		update_button_visibility();
 	}
+}
+
+void DataImportDialog::on_buttonImportData_clicked()
+{
+	AcceptCancelDialog dialog(this, "Wollen Sie die Daten importieren?\nDieser Schritt kann nicht rueckgaengig gemacht werden.");
+
+	if (!dialog.exec())
+		return;
+
+	auto_import_data();
+
+	on_buttonNextStep_clicked();
+}
+
+void DataImportDialog::on_buttonDone_clicked()
+{
+	AcceptCancelDialog dialog(this, "Wollen Sie den Daten-Import beenden?\nDieser Schritt kann nicht rueckgaengig gemacht werden.");
+
+	if (!dialog.exec())
+		return;
+
+	close();
 }
 
 void DataImportDialog::on_listColumnsToImport_currentRowChanged(int currentRow)

@@ -63,7 +63,38 @@ void MMJODB::on_actionNewDatabase_triggered()
 
     open_database(filepath, true);
 
-    // TODO: Create necessary tables
+    auto db = Database::get_instance();
+    if (!db)
+        return;
+
+    auto query = db->make_query(R"(
+CREATE TABLE traeger(
+    dienstgrad TEXT,
+    name TEXT,
+    vorname TEXT,
+    nation TEXT,
+    geburtstag TEXT,
+    todestag TEXT,
+    geburtsort TEXT,
+    sterbeort TEXT
+);
+
+CREATE TABLE insignie(
+    klasse TEXT,
+    matrikelnummer TEXT,
+    herstellungsdatum TEXT,
+    hersteller TEXT
+);
+
+CREATE TABLE verleihung(
+    verleihungsdatum TEXT,
+    anzahlverleihung TEXT
+);
+
+)");
+
+    if (!query.execute(nullptr))
+        m_emsg.showMessage(QString::fromStdString(query.get_err_msg()), "");
 }
 
 void MMJODB::on_actionShowDetails_triggered()
